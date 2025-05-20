@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sto lat Michalku!</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', cursive, sans-serif; /* Peak comedy font */
+        }
+        
+        body {
+            background-color: #121212;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+        
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .loading-text {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #00ff00;
+        }
+        
+        .progress-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            width: 0%;
+            background-color: #00ff00;
+            transition: width 0.5s;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #1f1f1f;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #ff00ff, 0 0 20px #0000ff;
+            animation: rainbow-text 5s linear infinite;
+        }
+        
+        @keyframes rainbow-text {
+            0% { color: #ff0000; }
+            14% { color: #ff7f00; }
+            28% { color: #ffff00; }
+            42% { color: #00ff00; }
+            57% { color: #0000ff; }
+            71% { color: #4b0082; }
+            85% { color: #9400d3; }
+            100% { color: #ff0000; }
+        }
+        
+        .subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+            padding: 20px;
+            background-color: #1f1f1f;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section h2 {
+            margin-bottom: 15px;
+            color: #00ff00;
+            font-size: 2rem;
+        }
+        
+        /* Gaming Section */
+        .game-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        
+        .game-card {
+            width: 300px;
+            padding: 15px;
+            background-color: #2a2a2a;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 255, 0, 0.2);
+        }
+        
+        .game-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        /* Work Section */
+        .work-meme {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+        }
+        
+        .corporate-prison {
+            background-color: #2a2a2a;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .manager {
+            display: inline-block;
+            padding: 10px 15px;
+            margin: 10px;
+            background-color: #ff0000;
+            border-radius: 8px;
+            font-weight: bold;
+            animation: shake 0.5s infinite;
+        }
+        
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        
+        .escape-button {
+            display: block;
+            margin: 20px auto;
+            padding: 15px 30px;
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .escape-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px #00ff00;
+        }
+        
+        /* Boss Fight Section */
+        #boss-fight {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+        
+        .boss {
+            width: 150px;
+            height: 150px;
+            background-color: #ff0000;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .boss:hover {
+            transform: scale(1.05);
+        }
+        
+        .health-bar {
+            width: 300px;
+            height: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            margin: 0 auto 20px;
+            overflow: hidden;
+        }
+        
+        .health {
+            height: 100%;
+            width: 100%;
+            background-color: #ff0000;
+            transition: width 0.3s;
+        }
+        
+        .attack-button {
+            padding: 10px 20px;
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+        }
+        
+        /* Birthday Wishes Section */
+        .wishes {
+            font-size: 1.2rem;
+            line-height: 1.6;
+        }
+        
+        .birthday-gif {
+            max-width: 100%;
+            height: auto;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+        }
+        
+        /* Party Effects */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+            clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            animation: fall linear forwards;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+        
+        /* Floating Emoji Characters */
+        .floating-emoji {
+            position: fixed;
+            font-size: 30px;
+            animation: float 15s linear infinite;
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(110vh) translateX(0);
+            }
+            100% {
+                transform: translateY(-10vh) translateX(20vw);
+            }
+        }
+        
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #ff00ff;
+            color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            z-index: 100;
+            transform: translateX(200%);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .show-notification {
+            transform: translateX(0);
+        }
+        
+        /* Winning Screen */
+        #winning-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .winning-text {
+            font-size: 48px;
+            margin-bottom: 30px;
+            color: #00ff00;
+            text-align: center;
+        }
+        
+        .restart-button {
+            padding: 15px 30px;
+            background-color: #00ff00;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #1f1f1f;
+            margin-top: 40px;
+        }
+        
+        /* Dark Mode Toggle */
+        .darkmode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+        }
+        
+        /* Light Mode Styles */
+        .light-mode {
+            background-color: #f0f0f0;
+            color: #121212;
+        }
+        
+        .light-mode header,
+        .light-mode .section,
+        .light-mode footer {
+            background-color: #e0e0e0;
+        }
+        
+        .light-mode .game-card {
+            background-color: #d5d5d5;
+        }
+        
+        .light-mode h2 {
+            color: #009900;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .game-card {
+                width: 100%;
+            }
+            
+            .progress-bar,
+            .health-bar {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-text">Ładowanie 26 urodzin.....</div>
+        <div class="progress-bar">
+            <div class="progress" id="loading-progress"></div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        New birthday quest available!
+    </div>
+
+    <!-- Header -->
+    <header>
+        <h1>HAPPY BIRTHDAY IT PRISONER!</h1>
+        <p class="subtitle">Achievement Unlocked: Survived Another Year of Gatesik Corporation</p>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Gaming Section -->
+        <!-- <section class="section" id="gaming-section">
+            <h2>Gaming: Your Only Escape From Reality</h2>
+            <div class="game-cards">
+                <div class="game-card">
+                    <div class="game-icon">🧙‍♂️</div>
+                    <h3>Dude of Eeeter: Deadfire</h3>
+                    <p>The only place where your choices actually matter, unlike at work.</p>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">👹</div>
+                    <h3>Diablow IV</h3>
+                    <p>Less scary than your Teams notifications on Monday morning.</p>
+                </div>
+                <div class="game-card">
+                    <div class="game-icon">💀</div>
+                    <h3>Dark Douls</h3>
+                    <p>Still easier than explaining to Ola why the server crashed.</p>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- Work Section -->
+        <section class="section" id="work-section">
+            <h2>Gates Corporation: Pain Simulator 2025</h2>
+            <div class="corporate-prison">
+                <h3>Current Level: Junior IT Analyst (Pain Level: 9000+)</h3>
+                <p>Your daily quests:</p>
+                <ul>
+                    <li>Defeat the Server Colkers</li>
+                    <li>Survive 8+ "quick meetings"</li>
+                    <li>Pretend to understand management's vision</li>
+                    <li>Explain why turning it off and on again actually works</li>
+                </ul>
+                <h4>Boss Encounters:</h4>
+                <div class="manager">Ola: "To możesz zrobić od ręki nie?"</div>
+                <div class="manager">Karolina: "Wielka prośba!"</div>
+                <button class="escape-button" id="escape-button">ESCAPE THE GATES CORPORATION DUNGEON</button>
+            </div>
+        </section>
+
+        <!-- Boss Fight Section -->
+        <section class="section" id="boss-fight">
+            <h2>BOSS FIGHT: Defeat Your Managers!</h2>
+            <div class="health-bar">
+                <div class="health" id="boss-health"></div>
+            </div>
+            <div class="boss" id="boss">
+                <span id="boss-name">Ola</span>
+            </div>
+            <div class="attacks">
+                <button class="attack-button" data-power="5">Idź na szluga</button>
+                <button class="attack-button" data-power="10">Wywal Asterixa</button>
+                <button class="attack-button" data-power="15">Weź L4</button>
+                <button class="attack-button" data-power="25">Idź do Inwalidów</button>
+            </div>
+            <p id="battle-log"></p>
+        </section>
+
+        <!-- Birthday Wishes Section -->
+        <section class="section" id="wishes-section">
+            <h2>Birthday Wishes</h2>
+            <div class="wishes">
+            <p>Sto lat dla cyfrowego niewolnika, co zasługuje na pensję jak CEO, a dostaje wypłatę, jakby był na stażu w Biedrze. Niech Twój kod zawsze śmiga bez jebania się z dependency, taski same się zamykają, a VPN nie rozłącza w połowie meczu, bo akurat zachciało Ci się sr*ć.</p> 
+            <p>Nie starzejesz się, tylko levelujesz — każde siwe włosy to +1 do odporności na idiotów, a każdy pryszcz od stresu to +5 do powera na przetrwanie kolejnego sprintu z PM-em, który nie odróżnia RAMu od makaronu.</p> 
+            <p>Za kolejny rok tłumaczenia menadżerom, że "resetowałeś to już", za udawanie, że robisz daily calla, gdy w rzeczywistości siedzisz na klopie z laptopem na kolanach i próbujesz nie umrzeć po wczorajszej kebabowej bombie.</p> 
+            <p>Niech Twój ping będzie niższy niż IQ twojego teamleada, niech bugi spierdalają zanim klikniesz "Run", a Twoje AFK zawsze brzmi jak "miałem ważny deploy" – chociaż naprawdę srałeś tak długo, że zdążyłeś przejść pół sezonu anime na kiblu.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Winning Screen -->
+    <div id="winning-screen">
+        <div class="winning-text">Zwycięstwo!<br>Managerki pokonane!<br>Wszystkiego Najlepszego zwiększyło się o 6969%</div>
+        <button class="restart-button" id="restart-button">Back to Birthday Reality</button>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>Made with ❤️ piss, pukes, poop and farts</p>
+    </footer>
+
+    <!-- Dark Mode Toggle -->
+    <button class="darkmode-toggle" id="darkmode-toggle">💡</button>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingProgress = document.getElementById('loading-progress');
+        const escapeButton = document.getElementById('escape-button');
+        const bossFight = document.getElementById('boss-fight');
+        const bossHealth = document.getElementById('boss-health');
+        const boss = document.getElementById('boss');
+        const bossName = document.getElementById('boss-name');
+        const attackButtons = document.querySelectorAll('.attack-button');
+        const battleLog = document.getElementById('battle-log');
+        const notification = document.getElementById('notification');
+        const winningScreen = document.getElementById('winning-screen');
+        const restartButton = document.getElementById('restart-button');
+        const darkmodeToggle = document.getElementById('darkmode-toggle');
+
+        // Game State
+        let currentBoss = 0;
+        let bosses = [
+            { name: 'Ola', health: 100, color: '#ff0000', attacks: ['assigns extra tickets', 'schedules a surprise meeting', 'asks for status updates'] },
+            { name: 'Karolina', health: 150, color: '#ff00ff', attacks: ['extends deadline', 'adds new requirements', 'cc\'s the entire department'] }
+        ];
+        let currentHealth = bosses[currentBoss].health;
+        let gameActive = false;
+
+        // Loading Screen Simulation
+        let progress = 0;
+        const loadingInterval = setInterval(() => {
+            progress += Math.random() * 10;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(loadingInterval);
+                setTimeout(() => {
+                    loadingScreen.style.display = 'none';
+                    showNotification();
+                    createFloatingEmojis();
+                }, 500);
+            }
+            loadingProgress.style.width = `${progress}%`;
+        }, 200);
+
+        // Show Notification
+        function showNotification() {
+            setTimeout(() => {
+                notification.classList.add('show-notification');
+                setTimeout(() => {
+                    notification.classList.remove('show-notification');
+                }, 3000);
+            }, 2000);
+        }
+
+        // Create Floating Emojis
+        function createFloatingEmojis() {
+            const emojis = ['🎮', '💻', '🎂', '🎉', '👾', '🤣', '💀', '🔥', '💯', '🙃'];
+            for (let i = 0; i < 10; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'floating-emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = `${Math.random() * 100}vw`;
+                emoji.style.animationDuration = `${15 + Math.random() * 30}s`;
+                emoji.style.animationDelay = `${Math.random() * 5}s`;
+                document.body.appendChild(emoji);
+            }
+        }
+
+        // Create Confetti Effect
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = `${Math.random() * 100}vw`;
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDuration = `${1 + Math.random() * 3}s`;
+                    document.body.appendChild(confetti);
+                    
+                    // Remove confetti after animation
+                    setTimeout(() => {
+                        confetti.remove();
+                    }, 3000);
+                }, i * 20);
+            }
+        }
+
+        // Start Boss Fight
+        escapeButton.addEventListener('click', () => {
+            document.getElementById('work-section').style.display = 'none';
+            bossFight.style.display = 'block';
+            gameActive = true;
+            setupBoss();
+            createConfetti();
+        });
+
+        // Setup Boss
+        function setupBoss() {
+            currentHealth = bosses[currentBoss].health;
+            bossName.textContent = bosses[currentBoss].name;
+            boss.style.backgroundColor = bosses[currentBoss].color;
+            bossHealth.style.width = '100%';
+            battleLog.textContent = `${bosses[currentBoss].name} appears! They're ready to ruin your day!`;
+        }
+
+        // Attack Boss
+        attackButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                if (!gameActive) return;
+                
+                const power = parseInt(button.getAttribute('data-power'));
+                const damage = power + Math.floor(Math.random() * 5);
+                currentHealth -= damage;
+                
+                // Update health bar
+                const healthPercentage = (currentHealth / bosses[currentBoss].health) * 100;
+                bossHealth.style.width = `${healthPercentage > 0 ? healthPercentage : 0}%`;
+                
+                // Boss attack
+                const bossAttack = bosses[currentBoss].attacks[Math.floor(Math.random() * bosses[currentBoss].attacks.length)];
+                
+                // Update battle log
+                battleLog.textContent = `You used ${button.textContent} for ${damage} damage! ${bosses[currentBoss].name} ${bossAttack}!`;
+                
+                // Check if boss is defeated
+                if (currentHealth <= 0) {
+                    if (currentBoss < bosses.length - 1) {
+                        // Move to next boss
+                        currentBoss++;
+                        battleLog.textContent = `${bosses[currentBoss-1].name} is defeated! ${bosses[currentBoss].name} appears!`;
+                        setTimeout(setupBoss, 1500);
+                    } else {
+                        // All bosses defeated
+                        gameActive = false;
+                        winningScreen.style.display = 'flex';
+                        createConfetti();
+                    }
+                }
+            });
+        });
+
+        // Restart Game
+        restartButton.addEventListener('click', () => {
+            winningScreen.style.display = 'none';
+            currentBoss = 0;
+            document.getElementById('work-section').style.display = 'block';
+            bossFight.style.display = 'none';
+        });
+
+        // Dark Mode Toggle
+        darkmodeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('light-mode');
+            darkmodeToggle.textContent = document.body.classList.contains('light-mode') ? '🌙' : '💡';
+        });
+
+        // Easter Egg: Click on the title
+        document.querySelector('h1').addEventListener('click', () => {
+            createConfetti();
+        });
+
+        // Easter Egg: Konami Code
+        let konamiIndex = 0;
+        const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+        document.addEventListener('keydown', (e) => {
+            if (e.key === konamiCode[konamiIndex]) {
+                konamiIndex++;
+                if (konamiIndex === konamiCode.length) {
+                    konamiIndex = 0;
+                    // Unlock secret: Give unlimited power
+                    attackButtons.forEach(button => {
+                        button.setAttribute('data-power', '100');
+                        button.style.backgroundColor = '#ff00ff';
+                    });
+                    battleLog.textContent = "GOD MODE ACTIVATED! You now have unlimited POWER!";
+                    createConfetti();
+                }
+            } else {
+                konamiIndex = 0;
+            }
+        });
+    </script>
+</body>
+</html>
